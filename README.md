@@ -1,6 +1,6 @@
 # Live Closed Captioning App
 
-A real-time closed captioning application that captures speech from your Mac's microphone and displays live captions. The app uses Google's speech recognition API and can optionally enhance transcriptions with Anthropic's Claude API for improved accuracy.
+This is a Christmas gift I made for my mom, who is hard of hearing. It is a real-time closed captioning application that captures speech from your Mac's microphone and displays live captions. The app uses Google's speech recognition API and can optionally enhance transcriptions with Anthropic's Claude API for improved accuracy.
 
 ## Features
 
