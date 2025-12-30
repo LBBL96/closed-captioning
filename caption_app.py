@@ -13,7 +13,7 @@ from tkinter import scrolledtext, font
 import time
 import os
 from anthropic import Anthropic
-import json
+
 
 class CaptionApp:
     def __init__(self):
@@ -23,18 +23,14 @@ class CaptionApp:
         self.root.geometry("800x400")
         self.root.configure(bg='black')
         
-        # Speech recognition setup
         self.recognizer = sr.Recognizer()
         self.microphone = sr.Microphone()
         
         # Thread-safe queue for communication
         self.text_queue = queue.Queue()
         
-        # Claude client (will be initialized if API key is provided)
         self.claude_client = None
         self.use_claude = False
-        
-        # Setup GUI
         self.setup_gui()
         
         # Audio processing thread
@@ -46,17 +42,14 @@ class CaptionApp:
         
     def setup_gui(self):
         """Setup the GUI components"""
-        # Main frame
         main_frame = tk.Frame(self.root, bg='black')
         main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
         
-        # Title label
         title_font = font.Font(family="Arial", size=16, weight="bold")
         title_label = tk.Label(main_frame, text="Live Captions", 
                                font=title_font, fg='white', bg='black')
         title_label.pack(pady=(0, 10))
         
-        # Caption display area
         self.caption_text = scrolledtext.ScrolledText(
             main_frame,
             wrap=tk.WORD,
@@ -69,11 +62,9 @@ class CaptionApp:
         )
         self.caption_text.pack(fill=tk.BOTH, expand=True)
         
-        # Control panel
         control_frame = tk.Frame(main_frame, bg='black')
         control_frame.pack(fill=tk.X, pady=(10, 0))
         
-        # Start/Stop button
         self.start_button = tk.Button(
             control_frame,
             text="Start Captioning",
@@ -86,7 +77,6 @@ class CaptionApp:
         )
         self.start_button.pack(side=tk.LEFT, padx=5)
         
-        # Clear button
         clear_button = tk.Button(
             control_frame,
             text="Clear",
@@ -99,7 +89,6 @@ class CaptionApp:
         )
         clear_button.pack(side=tk.LEFT, padx=5)
         
-        # Status label
         self.status_label = tk.Label(
             control_frame,
             text="Ready",
@@ -109,7 +98,6 @@ class CaptionApp:
         )
         self.status_label.pack(side=tk.RIGHT, padx=5)
         
-        # Schedule GUI updates
         self.update_gui()
         
     def calibrate_microphone(self):
@@ -132,7 +120,6 @@ class CaptionApp:
         self.start_button.config(text="Stop Captioning", bg='#e74c3c')
         self.status_label.config(text="Listening...")
         
-        # Start audio processing thread
         self.audio_thread = threading.Thread(target=self.process_audio, daemon=True)
         self.audio_thread.start()
         

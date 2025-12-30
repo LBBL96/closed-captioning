@@ -441,15 +441,19 @@ class StreamingCaptionApp:
         processed_captions = set()
         
         while self.is_running:
-            time.sleep(10)  # Process every 10 seconds
+            time.sleep(5)  # Process every 5 seconds
             
             # Need unprocessed captions
             unprocessed = [t for t in self.transcript_buffer if t['id'] not in processed_captions]
             if not unprocessed:
                 continue
                 
-            # Get all audio data collected so far
+            # Get all audio data collected so far, but limit to 50 seconds to avoid timeout
             audio_data = b''.join(self.audio_buffer)
+            max_audio_bytes = RATE * 2 * 50  # 50 seconds max
+            if len(audio_data) > max_audio_bytes:
+                # Keep only the most recent 50 seconds
+                audio_data = audio_data[-max_audio_bytes:]
             
             # Need at least 10 seconds of audio for good diarization
             if len(audio_data) < RATE * 2 * 10:
